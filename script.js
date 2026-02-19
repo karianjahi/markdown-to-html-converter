@@ -46,16 +46,19 @@ const converterMarkdown = () => {
             } else {
                 htmlResult.push(`<strong>${line.replaceAll("__", "")}</strong>`);
             }
+        }
 
         // italicized text
         regex = /^\*{1}.+\*{1}$|^_{1}.+_{1}$/g;
         if (regex.test(line)) {
-            if (line.includes("**")) {
-                htmlResult.push(`<strong>${line.replaceAll("**", "")}</strong>`);
+            if (line.includes("*")) {
+                htmlResult.push(`<em>${line.replaceAll("*", "")}</em>`);
             } else {
-                htmlResult.push(`<strong>${line.replaceAll("__", "")}</strong>`);
+                htmlResult.push(`<em>${line.replaceAll("_", "")}</em>`);
             }
         }
+
+        
 
 
     }
