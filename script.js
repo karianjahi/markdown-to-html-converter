@@ -16,14 +16,16 @@ const convertMarkdown = () => {
     let htmlOutputList = [];
 
     for (let item of mdInput_list) {
+        // start with headers
         for (let i = 1; i < 7; i++) { // several headers can be taken care of
             let regex = makeTitleRegex(i);
             if (regex.test(item)) {
                 item = item.replaceAll(makeTitleReplacementRegex(i), "")
                 htmlOutputList.push(`<h${i}>${item}</h${i}>`)
             }
-
         }
+
+
 
 
     };
