@@ -2,30 +2,36 @@ const markdownInput = document.getElementById("markdown-input");
 const htmlOutput = document.getElementById("html-output");
 const htmlPreview = document.getElementById("preview");
 
+const makeTitleRegex = (level) => {
+    return new RegExp(`^#{${level}}(?!#)\\s+.+`, "g"); // title strictly with {level} levels so not followed by another #
+};
+
+const makeTitleReplacementRegex = (level) => {
+    return new RegExp(`^#{${level}}\\s+`, "g");
+}
+
+
 const convertMarkdown = () => {
     const mdInput_list = markdownInput.value.split(/\r?\n/g);
-    htmlOutputList = [];
-
-    const makeTitleRegex = (level) => {
-        return new RegExp(`^#{${level}}(?!#)\\s+.+`, "g"); // title strictly with {level} levels so not followed by another #
-    };
-
-    const makeTitleReplacementRegex = (level) => {
-        return new RegExp(`^#{${level}}\\s+`, "g");
-    }
-
-    console.log(makeTitleRegex(2));
+    let htmlOutputList = [];
 
     for (let item of mdInput_list) {
         for (let i = 1; i < 7; i++) { // several headers can be taken care of
-            regex = makeTitleRegex(i)
+            let regex = makeTitleRegex(i);
             if (regex.test(item)) {
-                item = item.replaceAll(makeTitleReplacementRegex(i),"")
+                item = item.replaceAll(makeTitleReplacementRegex(i), "")
                 htmlOutputList.push(`<h${i}>${item}</h${i}>`)
             }
 
         }
+
+
     };
+    if (htmlOutputList.length === 0) {
+        for (let item of mdInput_list) 
+            htmlOutputList.push(`<p>${item}</p>`);
+    }
+
     // console.log(htmlOutputList);
     return htmlOutputList.join("");
 };
