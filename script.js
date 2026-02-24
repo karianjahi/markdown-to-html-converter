@@ -62,7 +62,15 @@ const convertMarkdown = () => {
             const src = item.match(srcRegex);
             console.log(src);
             htmlOutputList.push(`<img src=${src} alt=${altText}>`)
+        }
 
+        // implement urls
+        // [link text](URL)	<a href="URL">link text</a>
+        regex = /^\[.+?\]\(.+?\)/g;
+        if (regex.test(item)) {
+            const linkText = item.match(/(?<=\[).+?(?=\])/g);
+            const url = item.match(/(?<=\().+?(?=\))/g);
+            htmlOutputList.push(`<a href="${url}">${linkText}</a>`)
         }
 
     };
