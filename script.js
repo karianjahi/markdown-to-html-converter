@@ -49,6 +49,9 @@ const convertMarkdown = () => {
 
         }
 
+        // implement images
+        
+
     };
     if (htmlOutputList.length === 0) {
         for (let item of mdInput_list)
