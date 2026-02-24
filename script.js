@@ -39,7 +39,7 @@ const convertMarkdown = () => {
             item = item.replaceAll("__", "");
             htmlOutputList.push(`<strong>${item}</strong>`)
         };
-        
+
         // implement italicized characters
         regex = /^\*(?!\*)[^*]+\*$|^\_(?!\_)[^\_]+\_$/g;
         if (regex.test(item)) {
@@ -71,6 +71,40 @@ const convertMarkdown = () => {
             const linkText = item.match(/(?<=\[).+?(?=\])/g);
             const url = item.match(/(?<=\().+?(?=\))/g);
             htmlOutputList.push(`<a href="${url}">${linkText}</a>`)
+        }
+
+        // implement quotes
+        // > quote	<blockquote>quote</blockquote>
+        // > **this is a *quote***, <blockquote><strong>this is a <em>quote</em></strong></blockquote>
+        // > **this is a *quote***, <blockquote><strong>this is a <em>quote</em></strong></blockquote>
+        // > **this is a *quote* written by *John Cena* from WWE**
+        regex = /^>\s+?/g;
+        if (regex.test(item)) {
+            // test for double stars
+            const doubleStarRegex = /\*\*.+\*\*/g;
+            if (doubleStarRegex.test(item)) {
+                let itemlist = item.match(/(?<=\*\*).+?(?=\*\*$)/g)[0];
+                console.log(itemlist);
+                // test for single stars for text that needs italicization
+                if (/\*.+\*/g.test(itemlist)) {
+                    const matchItems = itemlist.match(/(?<=\*)[^\s+].+?(?=\*)/g)
+                    let quotedWords = [];
+                    for (let item of matchItems) {
+                        quotedWords.push(`<em>${item}</em>`)
+                        itemlist = itemlist.replace(item, `<em>${item}</em>`)
+                    }
+                    itemlist = itemlist.replaceAll(/\*/g, "");
+                    itemlist = `<strong>${itemlist}</strong>`;
+                    item = `<blockquote>${itemlist}</blockquote>`
+                    htmlOutputList.push(item);
+                }
+            } else {
+                // get the quote outright
+                item = item.match(/(?<=\>\s+).+/g)[0];
+                htmlOutputList.push(`<blockquote>${item}</blockquote>`)
+            }
+
+
         }
 
     };
