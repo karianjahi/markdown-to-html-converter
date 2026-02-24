@@ -50,7 +50,20 @@ const convertMarkdown = () => {
         }
 
         // implement images
-        
+        // ![alt-text](image-source)	<img alt="alt-text" src="image-source">
+        regex = /^\!{1}\[[^!]+\]\(.+\)/g;
+        // const something = "![solvey](sekuru.com)"
+        if (regex.test(item)) {
+            // extract alternalte text
+            const altTextRegex = /(?<=\[).+(?=\])/g;
+            const altText = item.match(altTextRegex);
+            // extract the image source
+            const srcRegex = /(?<=\().+?(?=\))/g;
+            const src = item.match(srcRegex);
+            console.log(src);
+            htmlOutputList.push(`<img src=${src} alt=${altText}>`)
+
+        }
 
     };
     if (htmlOutputList.length === 0) {
