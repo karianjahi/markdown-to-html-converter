@@ -20,8 +20,15 @@ const convertMarkdown = () => {
         for (let i = 1; i < 7; i++) { // several headers can be taken care of
             regex = makeTitleRegex(i);
             if (regex.test(item)) {
-                item = item.replaceAll(makeTitleReplacementRegex(i), "")
-                htmlOutputList.push(`<h${i}>${item}</h${i}>`)
+                if (/# \*\*[^*]+\*\*|# \_\_[^\_]+\_\_/g.test(item)) {
+                    console.log(`Haiya ${item} passes!`);
+                    item = item.replaceAll(/# \*\*|\*\*$/g, "");
+                    item = item.replaceAll(/# \_\_|\_\_$/g, "");
+                    htmlOutputList.push(`<h1><strong>${item}</strong></h1>`)
+                } else {
+                    item = item.replaceAll(makeTitleReplacementRegex(i), "");
+                    htmlOutputList.push(`<h${i}>${item}</h${i}>`)
+                }
             }
         }
 
