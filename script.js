@@ -34,11 +34,11 @@ const convertMarkdown = () => {
         };
         
         // implement italicized characters
-        regex = /^\*(?!\*)[^*]+\*$/g;
+        regex = /^\*(?!\*)[^*]+\*$|^\_(?!\_)[^\_]+\_$/g;
         if (regex.test(item)) {
             console.log(`${item} matches`);
-            item = item.replaceAll(/^\*|\*$/g, "");
-            htmlOutputList.push(`<em>${item}</em>\n`)
+            item = item.replaceAll(/^\*|\*$|^\_|\_$/g, "");
+            htmlOutputList.push(`<em>${item}</em>`)
 
         }
 
